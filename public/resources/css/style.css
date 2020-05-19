@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    text-decoration: none;
 }
 
 html,
@@ -187,6 +188,22 @@ input[type=submit] {
     margin-bottom: 10px;
     border-radius: 20px;
     padding: 20px;
+
+}
+
+#getTweets{
+    border: 2px solid white;
+    padding-left: 10px;
+    padding-right:10px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+#getTweets:hover{
+    border-color: dodgerblue;
+}
+#tile #a{
+    text-decoration: none;
 }
 
 
