@@ -170,6 +170,7 @@ input[type=submit] {
     background: none;
     padding: 10px;
     color: grey;
+    border-radius: 30px;
 }
 
 #tweet:hover{
