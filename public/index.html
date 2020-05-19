@@ -119,11 +119,12 @@
         getTweets.addEventListener('click', getAllTweets);
         
 
-
+        //function to add a tweet
         function addComment(){
-            event.preventDefault();
+            if (document.getElementById('newMessage').value !== ""){
+                event.preventDefault();
             let newTweetComment = {"comment":document.getElementById('newMessage').value}
-            var xhr = new XMLHttpRequest();
+            var xhr = new XMLHttpRequest(); //Used XMLHttp request to post the data to the timeline
             xhr.open("POST", '/comment/' , true);
             xhr.setRequestHeader('Content-Type','application/json;charset=UTF-8');
             xhr.onreadystatechange = function () {
@@ -131,10 +132,18 @@
                 console.log(xhr.responseText);
             }
             xhr.send(JSON.stringify(newTweetComment));
+            document.getElementById('newMessage').value = "";
+            alert("Check your timeline for the feed!");
+
+            }
+            else{
+                alert("please tweet something")
+            }
+           
         }
-        
+        //function to get the filtered tweets from the input
         function getAllTweets() {
-            const url = '/tweets/' + search.value;
+            const url = '/tweets/' + search.value; //url format to search tweets
             fetch(url).then(function (response) {
                 return response.json()
             }).then(function (data) {
@@ -143,6 +152,8 @@
                 console.log(JSON.stringify(error));
             })
         }
+
+        //function to append the search result to the body
         function outputTweets(data) {
             output.innerHTML = ' ';
             data.forEach(function (item, i) {
