@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" type="text/css" href="vendors/css/normalize.css">
+        <link rel="stylesheet" type="text/css" href="vendors/css/grid.css">
+        <link rel="stylesheet" type="text/css" href="vendors/css/ionicons.min.css">
+        <link rel="stylesheet" type="text/css" href="vendors/css/animate.css">
+        <link rel="stylesheet" type="text/css" href="resources/css/style.css">
+        <link rel="stylesheet" type="text/css" href="resources/css/queries.css">
+        <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,300italic' rel='stylesheet' type='text/css'>
+        <title>Chipper</title>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <div class="row">
+                    <img src="resources/img/logon.png" alt="TPS logo" class="logo">
+                    <img src="resources/img/logon.png" alt="TPS logo" class="logo-black">
+                    <ul class="main-nav js--main-nav">
+                        <li><a href="#quick_links">New Tweet</a></li>
+                        <li><a href="#tweets">Featured Tweets</a></li>
+                        <li><a href="#myBook">User Options</a></li>
+                    </ul>
+                    <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
+                </div>
+            </nav>
+            <div class="hero-text-box">
+                <h1>CHIPPER.</h1>
+                <h3>A Personalized Twitter</h3>
+                <div class="searchdiv"><input type="text" id="search" placeholder="Search"><button id="getTweets">Go</button></div>
+                
+            </div>
+            
+        </header>
+
+        <section class="section-links js--section-links" id="quick_links">
+            <div class="row">
+                <h2>NEW TWEET</h2>
+            </div>
+            <div class="row">
+
+                <form id="mesSender">
+                        <div class="col span-3-of-3">
+                            <textarea id = "newMessage" name="tweet" placeholder="New Tweet"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col span-1-of-3">
+                            <label>&nbsp;</label>
+                        </div>
+                        <div class="col span-1-of-3">
+                           <button type = "submit" class="btn btn-full span-3-of-3" id="tweet">Tweet</button>
+                        </div>
+                    </div>
+                </form>
+                
+                
+            </div>
+        </section>
+
+        <section class="section-testimonials js--section-links" id="tweets">
+            <div class="row">
+                <h2>Featured Tweets</h2>
+            </div>
+            <div class="row">
+                <div>
+                    <div class = "col" id="output">
+
+                    </div>
+                </div>
+        </section>
+
+        <footer>
+            <div class="row">
+                <div class="col span-1-of-2">
+                    <ul class="footer-nav">
+                        <li><a href="#">About us</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col span-1-of-2">
+                    <ul class="social-links">
+                        <li><a href="#"><i class="ion-social-facebook"></i></a></li>
+                        <li><a href="#"><i class="ion-social-twitter"></i></a></li>
+                        <li><a href="#"><i class="ion-social-googleplus"></i></a></li>
+                        <li><a href="https://www.instagram.com/_thepurplesilhouette/" target="_blank"><i class="ion-social-instagram"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <p>
+                   The main aim of this website is to provide the user everything from NEWS to their own personal blog.<br>
+                   Created using HTML, CSS and JavaScript.
+                </p>
+                <p>
+                   Created with Passion.<br>
+                   Love from India!
+                </p>
+            </div>
+        </footer>
+        
+        
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
+    <script src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdn.jsdelivr.net/selectivizr/1.0.3b/selectivizr.min.js"></script>
+    <script src="vendors/js/jquery.waypoints.min.js"></script>
+    <script src="resources/js/script.js"></script>
+    <script src = "index.js"></script>
+    <script>
+        const search = document.getElementById('search');
+        const getTweets = document.getElementById('getTweets');
+        const output = document.getElementById('output');
+        const mesSender = document.getElementById('mesSender');
+
+        mesSender.addEventListener('submit',addComment);
+        getTweets.addEventListener('click', getAllTweets);
+        
+
+
+        function addComment(){
+            event.preventDefault();
+            let newTweetComment = {"comment":document.getElementById('newMessage').value}
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", '/comment/' , true);
+            xhr.setRequestHeader('Content-Type','application/json;charset=UTF-8');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState != 4 || xhr.status != 200) return;
+                console.log(xhr.responseText);
+            }
+            xhr.send(JSON.stringify(newTweetComment));
+        }
+        
+        function getAllTweets() {
+            const url = '/tweets/' + search.value;
+            fetch(url).then(function (response) {
+                return response.json()
+            }).then(function (data) {
+                outputTweets(data.statuses)
+            }).catch(function (error) {
+                console.log(JSON.stringify(error));
+            })
+        }
+        function outputTweets(data) {
+            output.innerHTML = ' ';
+            data.forEach(function (item, i) {
+                console.log(item);
+                let hyper = `<a href="https://twitter.com/i/web/status/${item.id_str}" target="_blank">${item.text}</a>`;
+                let tile = document.createElement('div');
+                tile.id = "tile";
+                tile.className = "col";
+                let span = document.createElement('span');
+                span.innerHTML = `${hyper} <small>${item.user.name}</small> ♥ ${item.retweet_count}`;
+                tile.appendChild(span);
+                output.appendChild(tile);
+            })
+        }
+    
+    </script>
+    </body>  
+    
+</html>

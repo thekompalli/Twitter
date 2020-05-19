@@ -1,17 +1,17 @@
 {
-  "name": "twitter-monitoring",
+  "name": "tweet",
   "version": "1.0.0",
   "description": "",
-  "main": "twit.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Tom Baranowicz",
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "franc": "^5.0.0",
-    "node-notifier": "^7.0.0",
-    "open": "^7.0.3",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4",
     "twit": "^2.2.11"
   }
 }
